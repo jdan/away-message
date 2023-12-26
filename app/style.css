@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.away-message {
+  width: 300px;
+  margin: 12px auto;
+}
+
+.away-message .window-body {
+  padding: 6px;
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+.label {
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.label select {
+  width: 160px;
+}
+
+.message-input label {
+  margin-bottom: 4px;
+}
+
+.message-input textarea {
+  margin-top: 0;
+  resize: none;
+  font-family: Comic Sans MS;
+  background: gray;
+  color: pink;
+  font-size: 11px;
+}
+
+.special-chars td {
+  padding-left: 4px;
+}
+
+.special-chars .code {
+  width: 14px;
+}
+
+.special-chars .sp {
+  display: inline-block;
+  width: 4px;
+}
+
+.bottom-section {
+  position: relative;
+  margin: 8px 0 12px;
+}
+
+.later-use {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.later-use input:focus + label {
+  outline: none;
+}
+
+.later-use label[for="save-for-later"] {
+  margin-right: 3px;
+}
+
+.submit {
+  justify-content: center;
+}
+
+.submit button {
+  width: 86px;
+}
+
+.submit .button-gap {
+  width: 8px;
+}
