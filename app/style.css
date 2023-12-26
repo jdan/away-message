@@ -92,3 +92,25 @@ main {
 table {
   background: none;
 }
+
+.icon-button {
+  box-shadow: none;
+}
+
+.icon-button:active > * {
+  transform: translate(1px, 1px);
+}
+
+fieldset {
+  display: flex;
+  padding: 0;
+  min-inline-size: 0;
+}
+
+.field-row-stacked * + * {
+  margin-top: 0px;
+}
+
+.icon-button:focus {
+  outline: none;
+}
