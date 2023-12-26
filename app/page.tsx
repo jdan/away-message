@@ -1,4 +1,48 @@
+"use client";
+
+import { CSSProperties, useMemo, useState } from "react";
+
+interface EditorStateV1 {
+  version: 1;
+  value: string;
+  fontFamily: "Times New Roman";
+  fontSize: (typeof fontSizes)[number];
+}
+
+const fontSizes = [8, 10, 14, 18, 24, 32, 64];
+
+type EditorState = EditorStateV1;
+
 export default function Home() {
+  const [state, setState] = useState<EditorState>({
+    version: 1,
+    fontSize: 14,
+    fontFamily: "Times New Roman",
+    value: `BRB mom needs computer lol "chocolate milk?" HAHAHA derek`,
+  });
+
+  const increaseFontSize = () => {
+    const idx = fontSizes.indexOf(state.fontSize);
+    if (idx === fontSizes.length - 1) return;
+    setState({ ...state, fontSize: fontSizes[idx + 1] });
+  };
+
+  const decreaseFontSize = () => {
+    const idx = fontSizes.indexOf(state.fontSize);
+    if (idx === 0) return;
+    setState({ ...state, fontSize: fontSizes[idx - 1] });
+  };
+
+  const style = useMemo<CSSProperties>(
+    () => ({
+      fontFamily: state.fontFamily,
+      overflowY: "auto",
+      height: 64,
+      fontSize: state.fontSize,
+    }),
+    [state.fontFamily, state.fontSize]
+  );
+
   return (
     <main>
       <div className="window away-message">
@@ -19,11 +63,14 @@ export default function Home() {
 
           <section className="field-row-stacked message-input">
             <label>Enter new Away message:</label>
-            <fieldset className="editing-controls"></fieldset>
+            <fieldset className="editing-controls">
+              <button onClick={() => increaseFontSize()}>{"+"}</button>
+              <button onClick={() => decreaseFontSize()}>{"-"}</button>
+            </fieldset>
             <textarea
-              rows={4}
               spellCheck="false"
-              defaultValue={`BRB mom needs computer lol "chocolate milk?" HAHAHA derek`}
+              defaultValue={state.value}
+              style={style}
             />
           </section>
 
@@ -72,8 +119,6 @@ export default function Home() {
           </section>
         </div>
       </div>
-
-      <a href="https://glitch.com/edit/#!/away-message">remix this</a>
     </main>
   );
 }
