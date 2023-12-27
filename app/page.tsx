@@ -20,15 +20,18 @@ interface EditorStateV1 {
   bold: boolean;
   italic: boolean;
   underline: boolean;
+  textColor: colorChoice;
+  backgroundColor: colorChoice;
 }
 
+type colorChoice = ["basic" | "custom", string];
 const fontSizes = [8, 10, 14, 18, 24, 32, 64];
 
 type EditorState = EditorStateV1;
 
 const IconButton = (props: {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick: () => void;
 }) => (
   <button
     className="icon-button"
@@ -63,8 +66,14 @@ export default function Home() {
     bold: false,
     italic: false,
     underline: false,
+    textColor: ["basic", "#000000"],
+    backgroundColor: ["basic", "#FFFFFF"],
     value: "I am away from my computer right now.",
   });
+
+  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
+  const [showBackgroundColorPicker, setShowBackgroundColorPicker] =
+    useState(false);
 
   const style = useMemo<CSSProperties>(
     () => ({
@@ -75,12 +84,16 @@ export default function Home() {
       fontWeight: state.bold ? "bold" : "normal",
       fontStyle: state.italic ? "italic" : "normal",
       textDecoration: state.underline ? "underline" : "none",
+      color: state.textColor?.[1] || "#000000",
+      backgroundColor: state.backgroundColor?.[1] || "#FFFFFF",
     }),
     [
+      state.backgroundColor,
       state.bold,
       state.fontFamily,
       state.fontSize,
       state.italic,
+      state.textColor,
       state.underline,
     ]
   );
@@ -106,8 +119,8 @@ export default function Home() {
   };
 
   return (
-    <main style={{ position: "relative" }}>
-      <div className="window away-message">
+    <main>
+      <div className="window away-message" style={{ position: "relative" }}>
         <div className="title-bar">
           <div className="title-bar-text">Edit Away Message</div>
           <div className="title-bar-controls">
@@ -126,10 +139,10 @@ export default function Home() {
           <section className="field-row-stacked message-input">
             <label>Enter new Away message:</label>
             <fieldset className="editing-controls">
-              <IconButton>
+              <IconButton onClick={() => setShowTextColorPicker(true)}>
                 <TextColorIcon fill="#1618FD" />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={() => setShowBackgroundColorPicker(true)}>
                 <BackgroundColorIcon fill="#1618FD" />
               </IconButton>
 
@@ -219,12 +232,33 @@ export default function Home() {
             <button>Cancel</button>
           </section>
         </div>
-      </div>
 
-      <ColorPickerWindow
-        onSelect={(color) => console.log(color)}
-        onClose={() => {}}
-      />
+        {showTextColorPicker && (
+          <ColorPickerWindow
+            chosenColor={state.textColor}
+            onSelect={(colorChoice) => {
+              setState({ ...state, textColor: colorChoice });
+              setShowTextColorPicker(false);
+            }}
+            onClose={() => {
+              setShowTextColorPicker(false);
+            }}
+          />
+        )}
+
+        {showBackgroundColorPicker && (
+          <ColorPickerWindow
+            chosenColor={state.backgroundColor}
+            onSelect={(colorChoice) => {
+              setState({ ...state, backgroundColor: colorChoice });
+              setShowBackgroundColorPicker(false);
+            }}
+            onClose={() => {
+              setShowBackgroundColorPicker(false);
+            }}
+          />
+        )}
+      </div>
     </main>
   );
 }
@@ -241,7 +275,8 @@ const ColorWell = (props: {
       // override 98.css min-width and min-height
       minWidth: 0,
       minHeight: 0,
-      width: 20,
+      padding: 0,
+      width: 22,
       height: 17,
       boxShadow: props.isSelected
         ? // The black edges are in the right place but these colors are wrong
@@ -256,13 +291,14 @@ const ColorWell = (props: {
 
 // TODO: Persist the last chosen color?
 const ColorPickerWindow = (props: {
-  onSelect: (color: string) => void;
+  chosenColor: colorChoice;
+  onSelect: (chosenColor: colorChoice) => void;
   onClose: () => void;
 }) => {
-  const [selectedColor, setSelectedColor] = useState<
-    ["basic" | "custom", string] | null
-  >(null);
-  const handleSelect = useCallback((tuple: ["basic" | "custom", string]) => {
+  const [selectedColor, setSelectedColor] = useState<colorChoice>(
+    props.chosenColor
+  );
+  const handleSelect = useCallback((tuple: colorChoice) => {
     setSelectedColor(tuple);
   }, []);
 
@@ -346,7 +382,14 @@ const ColorPickerWindow = (props: {
   );
 
   return (
-    <div className="window">
+    <div
+      className="window"
+      style={{
+        position: "absolute",
+        top: 24,
+        left: 8,
+      }}
+    >
       <div className="title-bar">
         <div className="title-bar-text">Color</div>
         <div className="title-bar-controls">
@@ -393,7 +436,7 @@ const ColorPickerWindow = (props: {
 
         <div className="field-row">
           <button
-            onClick={() => selectedColor && props.onSelect(selectedColor[1])}
+            onClick={() => selectedColor && props.onSelect(selectedColor)}
           >
             OK
           </button>
