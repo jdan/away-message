@@ -136,6 +136,10 @@ export default function Home() {
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] =
     useState(false);
 
+  const [backgroundImage, setBackgroundImage] = useState<string | undefined>(
+    undefined
+  );
+
   const style = useMemo<CSSProperties>(
     () => ({
       fontFamily: state.fontFamily,
@@ -182,7 +186,27 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <main
+      style={{
+        backgroundImage,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+      onDrop={(e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        // get imagedata from the file
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = e.target?.result;
+          if (typeof data === "string") {
+            setBackgroundImage(`url("${data}")`);
+          }
+        };
+        reader.readAsDataURL(file);
+      }}
+      onDragOver={(e) => e.preventDefault()}
+    >
       <div className="window away-message" style={{ position: "relative" }}>
         <div className="title-bar">
           <div className="title-bar-text">Edit Away Message</div>
@@ -194,6 +218,7 @@ export default function Home() {
           <section className="field-row label">
             <label>Enter label:</label>
             <select
+              defaultValue={"empty"}
               onChange={(e) => {
                 const key = e.target.value;
                 if (!(key in DEFAULTS)) return;
@@ -201,7 +226,7 @@ export default function Home() {
                 setState(DEFAULTS[key as keyof typeof DEFAULTS].value);
               }}
             >
-              <option selected hidden></option>
+              <option hidden value="empty"></option>
               {Object.entries(DEFAULTS).map(([key, value]) => (
                 <option key={key} value={key}>
                   {value.label}
