@@ -22,7 +22,7 @@ import {
 interface EditorStateV1 {
   version: 1;
   value: string;
-  fontFamily: "Times New Roman";
+  fontFamily: string;
   fontSize: (typeof fontSizes)[number];
   bold: boolean;
   italic: boolean;
@@ -33,6 +33,7 @@ interface EditorStateV1 {
 
 type colorChoice = ["basic" | "custom", string];
 const fontSizes = [8, 10, 14, 18, 24, 32, 64];
+const fontFaces = ["Times New Roman", "Arial", "Comic Sans MS"] as const;
 
 type EditorState = EditorStateV1;
 
@@ -186,6 +187,29 @@ export default function Home() {
               </IconButton>
 
               <Divider />
+
+              <select
+                style={{
+                  appearance: "none",
+                  backgroundImage: `url(
+                    "data:image/svg+xml;charset=utf-8,%3Csvg width='23' height='14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3 2H1V3H0V4V5V6V7V8V9V10V11H2V10V9V8V7V6H3V5H2V4V3H3V2ZM16 6H17V7V8V9V10V11H15V10V9V8V7V6H14V7H13V8V9V10V11H11V10V9V8V7V6V5H16V6ZM20 9V10H21V11H19V10H18V9V8V7V6V5V4V3H20V4V5H21V6H20V7V8V9ZM0 12H21V13H0V12ZM4 10V9V8V7V6H5V5H9V6H10V7V8V9V10H9V11H5V10H4ZM8 9V10H6V9V8V7V6H8V7V8V9Z' fill='%231618FD'/%3E%3C/svg%3E"
+                  )`,
+                  backgroundColor: "transparent",
+                  boxShadow: "none",
+                  width: 0,
+                  height: "auto",
+                  padding: "0 2px 0 25px",
+                }}
+                onChange={(e) => {
+                  setState({ ...state, fontFamily: e.target.value });
+                }}
+              >
+                {fontFaces.map((fontFace) => (
+                  <option key={fontFace} value={fontFace}>
+                    {fontFace}
+                  </option>
+                ))}
+              </select>
             </fieldset>
             <textarea
               spellCheck="false"
