@@ -254,18 +254,14 @@ export default function Home() {
             </section>
 
             <section className="field-row later-use">
-              <label htmlFor="save-for-later">
-                Save for&nbsp;<u>l</u>ater use
-              </label>
+              <label htmlFor="save-for-later">Save for later use</label>
               <input id="save-for-later" type="checkbox" />
               <label>&nbsp;</label>
             </section>
           </div>
 
           <section className="field-row submit">
-            <button>
-              <u>I</u>&apos;m Away
-            </button>
+            <button>I&apos;m Away</button>
             <div className="button-gap"></div>
             <button>Cancel</button>
           </section>
