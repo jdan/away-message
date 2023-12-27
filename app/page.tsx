@@ -377,6 +377,28 @@ export default function Home() {
           />
         )}
       </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 10,
+          left: 10,
+        }}
+      >
+        <a target="_blank" href="https://jordanscales.com">
+          home
+        </a>
+        {" | "}
+        <a target="_blank" href="https://twitter.com/jdan">
+          @jdan
+        </a>
+        {" | "}
+        <a target="_blank" href="https://jdan.github.io/98.css">
+          98.css
+        </a>
+        {" | "}
+        tip: drag an image in to set background
+      </div>
     </main>
   );
 }
