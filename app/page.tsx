@@ -3,10 +3,13 @@
 import { CSSProperties, useMemo, useState } from "react";
 import {
   BackgroundColorIcon,
+  BoldIcon,
+  ItalicIcon,
   LargerFontIcon,
   NormalFontIcon,
   SmallerFontIcon,
   TextColorIcon,
+  UnderlineIcon,
 } from "./icons";
 
 interface EditorStateV1 {
@@ -14,6 +17,9 @@ interface EditorStateV1 {
   value: string;
   fontFamily: "Times New Roman";
   fontSize: (typeof fontSizes)[number];
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
 }
 
 const fontSizes = [8, 10, 14, 18, 24, 32, 64];
@@ -54,7 +60,10 @@ export default function Home() {
     version: 1,
     fontSize: 14,
     fontFamily: "Times New Roman",
-    value: `BRB mom needs computer lol "chocolate milk?" HAHAHA derek`,
+    bold: false,
+    italic: false,
+    underline: false,
+    value: "I am away from my computer right now.",
   });
 
   const style = useMemo<CSSProperties>(
@@ -63,8 +72,17 @@ export default function Home() {
       overflowY: "auto",
       height: 64,
       fontSize: state.fontSize,
+      fontWeight: state.bold ? "bold" : "normal",
+      fontStyle: state.italic ? "italic" : "normal",
+      textDecoration: state.underline ? "underline" : "none",
     }),
-    [state.fontFamily, state.fontSize]
+    [
+      state.bold,
+      state.fontFamily,
+      state.fontSize,
+      state.italic,
+      state.underline,
+    ]
   );
 
   const increaseFontSize = () => {
@@ -125,6 +143,26 @@ export default function Home() {
               </IconButton>
               <IconButton onClick={increaseFontSize}>
                 <LargerFontIcon letterFill="black" trailFill="#898986" />
+              </IconButton>
+
+              <Divider />
+
+              <IconButton
+                onClick={() => setState({ ...state, bold: !state.bold })}
+              >
+                <BoldIcon fill="black" />
+              </IconButton>
+              <IconButton
+                onClick={() => setState({ ...state, italic: !state.italic })}
+              >
+                <ItalicIcon fill="black" />
+              </IconButton>
+              <IconButton
+                onClick={() =>
+                  setState({ ...state, underline: !state.underline })
+                }
+              >
+                <UnderlineIcon fill="black" />
               </IconButton>
 
               <Divider />

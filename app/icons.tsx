@@ -112,3 +112,54 @@ export const LargerFontIcon = (props: {
     />
   </svg>
 );
+
+export const BoldIcon = (props: { fill: string }) => (
+  <svg
+    width="20"
+    height="14"
+    viewBox="0 0 20 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M5 3H4V4H5V5V6V7V8V9V10V11H4V12H5H6H7H8H9H10H11V11H12V10V9V8H11H10V7H11H12V6V5V4H11V3H10H9H8H7H6H5ZM9 7V6V5V4H8V5V6V7H9ZM8 8H9V9V10V11H8V10V9V8Z"
+      fill={props.fill}
+    />
+  </svg>
+);
+
+export const ItalicIcon = (props: { fill: string }) => (
+  <svg
+    width="20"
+    height="14"
+    viewBox="0 0 20 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M10 3H9V4H10H11V5H10V6H9V7H8V8H7V9H6V10H5V11H4H3V12H4H5H6H7H8H9V11H8H7V10H8V9H9V8H10V7H11V6H12V5H13V4H14H15V3H14H13H12H11H10Z"
+      fill={props.fill}
+    />
+  </svg>
+);
+
+export const UnderlineIcon = (props: { fill: string }) => (
+  <svg
+    width="20"
+    height="14"
+    viewBox="0 0 20 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M5 3H6H7H8V4V5V6V7V8V9H9H10H11V8V7V6V5V4H10V3H11H12H13V4V5V6V7V8V9V10H12H11H10H9H8H7V9H6V8V7V6V5V4H5V3ZM9 11H8H7H6H5V12H6H7H8H9H10H11H12H13H14V11H13H12H11H10H9Z"
+      fill={props.fill}
+    />
+  </svg>
+);
