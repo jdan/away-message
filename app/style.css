@@ -90,7 +90,7 @@ main {
 }
 
 table {
-  background: none;
+  background: none !important;
 }
 
 .icon-button {
@@ -108,7 +108,7 @@ fieldset {
 }
 
 .field-row-stacked * + * {
-  margin-top: 0px;
+  margin-top: 0px !important;
 }
 
 .icon-button:focus {
