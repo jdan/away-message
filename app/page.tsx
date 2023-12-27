@@ -397,7 +397,30 @@ export default function Home() {
           98.css
         </a>
         {" | "}
-        tip: drag an image in to set background
+        <label>
+          add background
+          <input
+            style={{ display: "none" }}
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              // get imagedata from the file
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const data = e.target?.result;
+                if (typeof data === "string") {
+                  setBackgroundImage(`url("${data}")`);
+                }
+              };
+              reader.readAsDataURL(file);
+            }}
+          />
+        </label>
+        <span className="desktop-only">
+          {" | "}
+          tip: you can also drag a background image onto this page
+        </span>
       </div>
     </main>
   );
