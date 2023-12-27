@@ -101,6 +101,14 @@ table {
   transform: translate(1px, 1px);
 }
 
+.icon-button:focus {
+  outline: none;
+}
+
+.icon-button:focus-visible {
+  outline: 1px dotted #000000;
+}
+
 fieldset {
   display: flex;
   padding: 0;
@@ -111,10 +119,14 @@ fieldset {
   margin-top: 0px !important;
 }
 
-.icon-button:focus {
+.color-well-btn:focus {
   outline: none;
 }
 
-.color-well-btn:focus {
-  outline: none;
+.color-well-btn:focus-within {
+  outline: 1px dotted #000000 !important;
+}
+
+.later-use:focus-within {
+  outline: 1px dotted #000000;
 }

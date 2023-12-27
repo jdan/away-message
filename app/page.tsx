@@ -1,6 +1,13 @@
 "use client";
 
-import { CSSProperties, useCallback, useMemo, useState } from "react";
+import {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   BackgroundColorIcon,
   BoldIcon,
@@ -267,27 +274,38 @@ const ColorWell = (props: {
   isSelected: boolean;
   color: string;
   onSelect: () => void;
-}) => (
-  <button
-    className="color-well-btn"
-    style={{
-      backgroundColor: props.color,
-      // override 98.css min-width and min-height
-      minWidth: 0,
-      minHeight: 0,
-      padding: 0,
-      width: 22,
-      height: 17,
-      boxShadow: props.isSelected
-        ? // The black edges are in the right place but these colors are wrong
-          "inset -1px -1px black, inset 1px 1px black, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a"
-        : "inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a",
-      outline: props.isSelected ? "1px dotted #000" : "none",
-      outlineOffset: 1,
-    }}
-    onClick={props.onSelect}
-  ></button>
-);
+}) => {
+  const buttonEl = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (props.isSelected) {
+      buttonEl.current?.focus();
+    }
+  });
+
+  return (
+    <button
+      ref={buttonEl}
+      className="color-well-btn"
+      style={{
+        backgroundColor: props.color,
+        // override 98.css min-width and min-height
+        minWidth: 0,
+        minHeight: 0,
+        padding: 0,
+        width: 22,
+        height: 17,
+        boxShadow: props.isSelected
+          ? // The black edges are in the right place but these colors are wrong
+            "inset -1px -1px black, inset 1px 1px black, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a"
+          : "inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a",
+        outline: props.isSelected ? "1px dotted #000" : "none",
+        outlineOffset: 1,
+      }}
+      onClick={props.onSelect}
+    ></button>
+  );
+};
 
 // TODO: Persist the last chosen color?
 const ColorPickerWindow = (props: {
