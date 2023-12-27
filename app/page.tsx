@@ -33,7 +33,14 @@ interface EditorStateV1 {
 
 type colorChoice = ["basic" | "custom", string];
 const fontSizes = [8, 10, 14, 18, 24, 32, 64];
-const fontFaces = ["Times New Roman", "Arial", "Comic Sans MS"] as const;
+const fontFaces = [
+  { label: "Times New Roman", value: "Times New Roman" },
+  { label: "Arial", value: "Arial" },
+  {
+    label: "Comic Sans",
+    value: `"Comic Sans", "Comic Sans MS", "Chalkboard", "ChalkboardSE-Regular", sans-serif`,
+  },
+] as const;
 
 type EditorState = EditorStateV1;
 
@@ -205,8 +212,8 @@ export default function Home() {
                 }}
               >
                 {fontFaces.map((fontFace) => (
-                  <option key={fontFace} value={fontFace}>
-                    {fontFace}
+                  <option key={fontFace.label} value={fontFace.value}>
+                    {fontFace.label}
                   </option>
                 ))}
               </select>
