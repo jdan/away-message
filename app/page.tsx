@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, useMemo, useState } from "react";
+import { CSSProperties, useCallback, useMemo, useState } from "react";
 import {
   BackgroundColorIcon,
   BoldIcon,
@@ -106,7 +106,7 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <main style={{ position: "relative" }}>
       <div className="window away-message">
         <div className="title-bar">
           <div className="title-bar-text">Edit Away Message</div>
@@ -220,6 +220,188 @@ export default function Home() {
           </section>
         </div>
       </div>
+
+      <ColorPickerWindow
+        onSelect={(color) => console.log(color)}
+        onClose={() => {}}
+      />
     </main>
   );
 }
+
+const ColorWell = (props: {
+  isSelected: boolean;
+  color: string;
+  onSelect: () => void;
+}) => (
+  <button
+    className="color-well-btn"
+    style={{
+      backgroundColor: props.color,
+      // override 98.css min-width and min-height
+      minWidth: 0,
+      minHeight: 0,
+      width: 20,
+      height: 17,
+      boxShadow: props.isSelected
+        ? // The black edges are in the right place but these colors are wrong
+          "inset -1px -1px black, inset 1px 1px black, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a"
+        : "inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a",
+      outline: props.isSelected ? "1px dotted #000" : "none",
+      outlineOffset: 1,
+    }}
+    onClick={props.onSelect}
+  ></button>
+);
+
+// TODO: Persist the last chosen color?
+const ColorPickerWindow = (props: {
+  onSelect: (color: string) => void;
+  onClose: () => void;
+}) => {
+  const [selectedColor, setSelectedColor] = useState<
+    ["basic" | "custom", string] | null
+  >(null);
+  const handleSelect = useCallback((tuple: ["basic" | "custom", string]) => {
+    setSelectedColor(tuple);
+  }, []);
+
+  const gridStyle = useMemo<CSSProperties>(
+    () => ({
+      padding: "6px 4px",
+      display: "grid",
+      gridTemplateColumns: "repeat(8, 1fr)",
+      gap: 6,
+      marginBottom: 8,
+    }),
+    []
+  );
+
+  const basicColors = useMemo(
+    () => [
+      "#F07D77",
+      "#FEFE78",
+      "#8FFA76",
+      "#5DF975",
+      "#91FBFE",
+      "#3074FD",
+      "#F07DB9",
+      "#F17EFF",
+      "#EC301A",
+      "#FEFE1E",
+      "#8FFA13",
+      "#5CF93A",
+      "#5FFAFE",
+      "#2D73B7",
+      "#7575B7",
+      "#ED36FF",
+      "#6E3B39",
+      "#F07C3E",
+      "#5CF90F",
+      "#2B7274",
+      "#173874",
+      "#7677FE",
+      "#6C1739",
+      "#EC3177",
+      "#6C160A",
+      "#F07C1B",
+      "#2A7204",
+      "#2A7238",
+      "#1618FD",
+      "#0C0D94",
+      "#6C1974",
+      "#6E20FD",
+      "#000000",
+      "#74740D",
+      "#747439",
+      "#757575",
+      "#447374",
+      "#B8B8B8",
+      "#340A38",
+      "#FFFFFF",
+    ],
+    []
+  );
+
+  const customColors = useMemo(
+    () => [
+      "#111111",
+      "#1D1D1D",
+      "#292929",
+      "#373737",
+      "#464646",
+      "#545454",
+      "#646464",
+      "#747474",
+      "#848484",
+      "#959595",
+      "#A5A5A5",
+      "#B7B7B7",
+      "#C8C8C8",
+      "#DADADA",
+      "#ECECEC",
+      "#FFFFFF",
+    ],
+    []
+  );
+
+  return (
+    <div className="window">
+      <div className="title-bar">
+        <div className="title-bar-text">Color</div>
+        <div className="title-bar-controls">
+          {/* TODO: Info button */}
+          <button aria-label="Close" onClick={props.onClose}></button>
+        </div>
+      </div>
+      <div className="window-body">
+        <section className="field-row-stacked">
+          <label>Basic colors:</label>
+          <div style={gridStyle}>
+            {basicColors.map((color) => (
+              <ColorWell
+                key={`basic-${color}`}
+                isSelected={
+                  selectedColor?.[0] === "basic" && color === selectedColor[1]
+                }
+                color={color}
+                onSelect={() => handleSelect(["basic", color])}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="field-row-stacked">
+          <label>Custom colors:</label>
+          <div style={gridStyle}>
+            {customColors.map((color) => (
+              <ColorWell
+                key={`custom-${color}`}
+                isSelected={
+                  selectedColor?.[0] === "custom" && color === selectedColor[1]
+                }
+                color={color}
+                onSelect={() => handleSelect(["custom", color])}
+              />
+            ))}
+          </div>
+        </section>
+
+        <button disabled style={{ width: "100%", marginBottom: 4 }}>
+          Define custom colors {">>"}
+        </button>
+
+        <div className="field-row">
+          <button
+            onClick={() => selectedColor && props.onSelect(selectedColor[1])}
+          >
+            OK
+          </button>
+          <button style={{ marginLeft: 8 }} onClick={props.onClose}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

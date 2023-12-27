@@ -114,3 +114,7 @@ fieldset {
 .icon-button:focus {
   outline: none;
 }
+
+.color-well-btn:focus {
+  outline: none;
+}
