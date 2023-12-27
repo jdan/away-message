@@ -1,7 +1,13 @@
 "use client";
 
 import { CSSProperties, useMemo, useState } from "react";
-import { BackgroundColorIcon, TextColorIcon } from "./icons";
+import {
+  BackgroundColorIcon,
+  LargerFontIcon,
+  NormalFontIcon,
+  SmallerFontIcon,
+  TextColorIcon,
+} from "./icons";
 
 interface EditorStateV1 {
   version: 1;
@@ -14,7 +20,10 @@ const fontSizes = [8, 10, 14, 18, 24, 32, 64];
 
 type EditorState = EditorStateV1;
 
-const IconButton = (props: { children: React.ReactNode }) => (
+const IconButton = (props: {
+  children: React.ReactNode;
+  onClick?: () => void;
+}) => (
   <button
     className="icon-button"
     style={{
@@ -22,6 +31,7 @@ const IconButton = (props: { children: React.ReactNode }) => (
       minWidth: 0,
       minHeight: 0,
     }}
+    onClick={props.onClick}
   >
     {props.children}
   </button>
@@ -63,6 +73,10 @@ export default function Home() {
     setState({ ...state, fontSize: fontSizes[idx + 1] });
   };
 
+  const resetFontSize = () => {
+    setState({ ...state, fontSize: 14 });
+  };
+
   const decreaseFontSize = () => {
     const idx = fontSizes.indexOf(state.fontSize);
     if (idx === 0) return;
@@ -100,10 +114,20 @@ export default function Home() {
               <IconButton>
                 <BackgroundColorIcon fill="#1618FD" />
               </IconButton>
+
               <Divider />
-              <IconButton>
-                <TextColorIcon fill="#1618FD" />
+
+              <IconButton onClick={decreaseFontSize}>
+                <SmallerFontIcon letterFill="black" trailFill="#898986" />
               </IconButton>
+              <IconButton onClick={resetFontSize}>
+                <NormalFontIcon fill="black" />
+              </IconButton>
+              <IconButton onClick={increaseFontSize}>
+                <LargerFontIcon letterFill="black" trailFill="#898986" />
+              </IconButton>
+
+              <Divider />
             </fieldset>
             <textarea
               spellCheck="false"
