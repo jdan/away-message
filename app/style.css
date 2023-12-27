@@ -37,16 +37,10 @@ main {
 .message-input textarea {
   margin-top: 0;
   resize: none;
-  /*
-  font-family: Comic Sans MS;
-  background: gray;
-  color: pink;
-  font-size: 11px;
-  */
 }
 
 .special-chars td {
-  padding-left: 4px;
+  padding: 0 2px 0 4px;
 }
 
 .special-chars .code {
