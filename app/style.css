@@ -124,3 +124,9 @@ fieldset {
 .later-use:focus-within {
   outline: 1px dotted #000000;
 }
+
+@media screen and (max-width: 600px) {
+  .desktop-only {
+    display: none;
+  }
+}
