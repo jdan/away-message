@@ -73,18 +73,56 @@ const Divider = () => (
   />
 );
 
+const DEFAULTS = {
+  default: {
+    label: "Default Away Message",
+    value: {
+      version: 1 as const,
+      value: "I am away from my computer right now.",
+      fontFamily: "Times New Roman",
+      fontSize: 14,
+      bold: false,
+      italic: false,
+      underline: false,
+      textColor: ["basic", "#000000"] as colorChoice,
+      backgroundColor: ["basic", "#FFFFFF"] as colorChoice,
+    },
+  },
+  playingGame: {
+    label: "Playing Game",
+    value: {
+      version: 1 as const,
+      value:
+        "I am not available because I am playing a computer game that takes up the entire screen.",
+      fontFamily: "Times New Roman",
+      fontSize: 14,
+      bold: false,
+      italic: false,
+      underline: false,
+      textColor: ["basic", "#000000"] as colorChoice,
+      backgroundColor: ["basic", "#FFFFFF"] as colorChoice,
+    },
+  },
+  jdansFavorite: {
+    label: "jdan's go-to",
+    value: {
+      version: 1 as const,
+      value:
+        "mom needs computer... text\n\n.~.~*~ \n  a rEaSoN tO sTaRt ovEr New\n    aNd ThE rEaSoN iS yOu\n.~.~*~ ",
+      fontFamily:
+        '"Comic Sans", "Comic Sans MS", "Chalkboard", "ChalkboardSE-Regular", sans-serif',
+      fontSize: 10,
+      bold: true,
+      italic: false,
+      underline: false,
+      textColor: ["basic", "#ED36FF"] as colorChoice,
+      backgroundColor: ["basic", "#000000"] as colorChoice,
+    },
+  },
+};
+
 export default function Home() {
-  const [state, setState] = useState<EditorState>({
-    version: 1,
-    fontSize: 14,
-    fontFamily: "Times New Roman",
-    bold: false,
-    italic: false,
-    underline: false,
-    textColor: ["basic", "#000000"],
-    backgroundColor: ["basic", "#FFFFFF"],
-    value: "I am away from my computer right now.",
-  });
+  const [state, setState] = useState<EditorState>(DEFAULTS.default.value);
 
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] =
@@ -145,9 +183,20 @@ export default function Home() {
         <div className="window-body">
           <section className="field-row label">
             <label>Enter label:</label>
-            <select>
-              <option>Message Title</option>
-              <option>Gaming</option>
+            <select
+              onChange={(e) => {
+                const key = e.target.value;
+                if (!(key in DEFAULTS)) return;
+                // Do I need this coercion?
+                setState(DEFAULTS[key as keyof typeof DEFAULTS].value);
+              }}
+            >
+              <option selected hidden></option>
+              {Object.entries(DEFAULTS).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value.label}
+                </option>
+              ))}
             </select>
           </section>
 
