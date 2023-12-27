@@ -129,4 +129,8 @@ fieldset {
   .desktop-only {
     display: none;
   }
+
+  textarea {
+    height: 100px;
+  }
 }
