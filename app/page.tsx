@@ -40,6 +40,14 @@ const fontFaces = [
     label: "Comic Sans",
     value: `"Comic Sans", "Comic Sans MS", "Chalkboard", "ChalkboardSE-Regular", sans-serif`,
   },
+  {
+    label: "Impact",
+    value: "Impact",
+  },
+  {
+    label: "Georgia",
+    value: "Georgia",
+  },
 ] as const;
 
 type EditorState = EditorStateV1;
@@ -133,6 +141,8 @@ export default function Home() {
       fontFamily: state.fontFamily,
       overflowY: "auto",
       height: 64,
+      // Allow resizing, 64 is true to form but quite limiting
+      resize: "vertical",
       fontSize: state.fontSize,
       fontWeight: state.bold ? "bold" : "normal",
       fontStyle: state.italic ? "italic" : "normal",
