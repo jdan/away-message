@@ -54,6 +54,7 @@ type EditorState = EditorStateV1;
 
 const IconButton = (props: {
   children: React.ReactNode;
+  title: string;
   onClick: () => void;
 }) => (
   <button
@@ -64,6 +65,7 @@ const IconButton = (props: {
       minHeight: 0,
     }}
     onClick={props.onClick}
+    title={props.title}
   >
     {props.children}
   </button>
@@ -192,19 +194,7 @@ export default function Home() {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}
-      onDrop={(e) => {
-        e.preventDefault();
-        const file = e.dataTransfer.files[0];
-        // get imagedata from the file
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const data = e.target?.result;
-          if (typeof data === "string") {
-            setBackgroundImage(`url("${data}")`);
-          }
-        };
-        reader.readAsDataURL(file);
-      }}
+      onDrop={(e) => {}}
       onDragOver={(e) => e.preventDefault()}
     >
       <div className="window away-message" style={{ position: "relative" }}>
@@ -238,38 +228,47 @@ export default function Home() {
           <section className="field-row-stacked message-input">
             <label>Enter new Away message:</label>
             <fieldset className="editing-controls">
-              <IconButton onClick={() => setShowTextColorPicker(true)}>
+              <IconButton
+                title="Text Color"
+                onClick={() => setShowTextColorPicker(true)}
+              >
                 <TextColorIcon fill="#1618FD" />
               </IconButton>
-              <IconButton onClick={() => setShowBackgroundColorPicker(true)}>
+              <IconButton
+                title="Background Color"
+                onClick={() => setShowBackgroundColorPicker(true)}
+              >
                 <BackgroundColorIcon fill="#1618FD" />
               </IconButton>
 
               <Divider />
 
-              <IconButton onClick={decreaseFontSize}>
+              <IconButton title="Smaller Font" onClick={decreaseFontSize}>
                 <SmallerFontIcon letterFill="black" trailFill="#898986" />
               </IconButton>
-              <IconButton onClick={resetFontSize}>
+              <IconButton title="Normal Font" onClick={resetFontSize}>
                 <NormalFontIcon fill="black" />
               </IconButton>
-              <IconButton onClick={increaseFontSize}>
+              <IconButton title="Larger Font" onClick={increaseFontSize}>
                 <LargerFontIcon letterFill="black" trailFill="#898986" />
               </IconButton>
 
               <Divider />
 
               <IconButton
+                title="Bold"
                 onClick={() => setState({ ...state, bold: !state.bold })}
               >
                 <BoldIcon fill="black" />
               </IconButton>
               <IconButton
+                title="Italic"
                 onClick={() => setState({ ...state, italic: !state.italic })}
               >
                 <ItalicIcon fill="black" />
               </IconButton>
               <IconButton
+                title="Underline"
                 onClick={() =>
                   setState({ ...state, underline: !state.underline })
                 }
@@ -294,6 +293,7 @@ export default function Home() {
                 onChange={(e) => {
                   setState({ ...state, fontFamily: e.target.value });
                 }}
+                title="Font"
               >
                 {fontFaces.map((fontFace) => (
                   <option key={fontFace.label} value={fontFace.value}>
