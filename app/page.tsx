@@ -393,6 +393,10 @@ export default function Home() {
           @jdan
         </a>
         {" | "}
+        <a target="_blank" href="https://github.com/jdan/away-message">
+          github
+        </a>
+        {" | "}
         <a target="_blank" href="https://jdan.github.io/98.css">
           98.css
         </a>
