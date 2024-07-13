@@ -18,7 +18,7 @@ import {
   TextColorIcon,
   UnderlineIcon,
 } from "./icons";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface EditorStateV1 {
   version: 1;
@@ -134,7 +134,7 @@ const DEFAULTS = {
 
 export default function Home() {
   const [state, setState] = useState<EditorState>(DEFAULTS.default.value);
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
 
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] =
@@ -205,11 +205,11 @@ export default function Home() {
       setState(state);
     };
 
-    const { id } = router.query;
+    const id = searchParams.get('id');
     if (id) {
       fetchState(id as string);
     }
-  }, [router.query]);
+  }, [searchParams]);
 
   return (
     <main
