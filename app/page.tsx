@@ -18,6 +18,7 @@ import {
   TextColorIcon,
   UnderlineIcon,
 } from "./icons";
+import { useRouter } from "next/router";
 
 interface EditorStateV1 {
   version: 1;
@@ -133,6 +134,7 @@ const DEFAULTS = {
 
 export default function Home() {
   const [state, setState] = useState<EditorState>(DEFAULTS.default.value);
+  const router = useRouter();
 
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] =
@@ -186,6 +188,28 @@ export default function Home() {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setState({ ...state, value: e.target.value });
   };
+
+  const handleAwayClick = async () => {
+    const response = await fetch("/.netlify/functions/saveState", {
+      method: "POST",
+      body: JSON.stringify({ state }),
+    });
+    const { id } = await response.json();
+    router.push(`/${id}`);
+  };
+
+  useEffect(() => {
+    const fetchState = async (id: string) => {
+      const response = await fetch(`/.netlify/functions/getState?id=${id}`);
+      const { state } = await response.json();
+      setState(state);
+    };
+
+    const { id } = router.query;
+    if (id) {
+      fetchState(id as string);
+    }
+  }, [router.query]);
 
   return (
     <main
@@ -345,7 +369,7 @@ export default function Home() {
           </div>
 
           <section className="field-row submit">
-            <button>I&apos;m Away</button>
+            <button onClick={handleAwayClick}>I&apos;m Away</button>
             <div className="button-gap"></div>
             <button>Cancel</button>
           </section>
