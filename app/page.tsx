@@ -131,6 +131,25 @@ const DEFAULTS = {
   },
 };
 
+function parseUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const state = params.get("state");
+  if (state) {
+    try {
+      return JSON.parse(decodeURIComponent(state));
+    } catch (e) {
+      console.error("Failed to parse state from URL", e);
+    }
+  }
+  return null;
+}
+
+function updateUrl(state: EditorState) {
+  const params = new URLSearchParams(window.location.search);
+  params.set("state", encodeURIComponent(JSON.stringify(state)));
+  window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+}
+
 export default function Home() {
   const [state, setState] = useState<EditorState>(DEFAULTS.default.value);
 
@@ -186,6 +205,17 @@ export default function Home() {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setState({ ...state, value: e.target.value });
   };
+
+  useEffect(() => {
+    const initialState = parseUrl();
+    if (initialState) {
+      setState(initialState);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateUrl(state);
+  }, [state]);
 
   return (
     <main
