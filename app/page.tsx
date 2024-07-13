@@ -134,7 +134,7 @@ const DEFAULTS = {
 
 export default function Home() {
   const [state, setState] = useState<EditorState>(DEFAULTS.default.value);
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
 
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [showBackgroundColorPicker, setShowBackgroundColorPicker] =
