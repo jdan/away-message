@@ -105,7 +105,7 @@ table {
 
 fieldset {
   display: flex;
-  padding: 0;
+  padding: 0 !important;
   min-inline-size: 0;
 }
 
