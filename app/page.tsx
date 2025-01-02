@@ -389,7 +389,7 @@ export default function Home() {
           home
         </a>
         {" | "}
-        <a target="_blank" href="https://twitter.com/jdan">
+        <a target="_blank" href="https://bsky.app/profile/jdan.me">
           @jdan
         </a>
         {" | "}
